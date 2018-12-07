@@ -1,0 +1,8 @@
+Basics
+The starting point, learn all the basics of the language.
+
+Declaring variables, calling functions, and all the things you need to know before moving to the next lessons.
+
+Packages, variables, and functions.
+
+Learn the basic components of any Go program.

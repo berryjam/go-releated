@@ -1,0 +1,5 @@
+Methods and interfaces
+Learn how to define methods on types, how to declare interfaces, and how to put everything together.
+
+Methods and interfaces
+This lesson covers methods and interfaces, the constructs that define objects and their behavior.
