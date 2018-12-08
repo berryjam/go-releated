@@ -1,8 +1,8 @@
 package main
 
-func a() int { return 1 }
+func h() int { return 1 }
 
 func main() {
-	f := a
+	f := h
 	f()
 }

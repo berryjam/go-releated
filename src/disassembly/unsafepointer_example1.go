@@ -5,9 +5,9 @@ import (
 	"unsafe"
 )
 
-func a() int { return 1 }
+func ll() int { return 1 }
 
 func main() {
-	f := a
+	f := ll
 	fmt.Printf("0x%x\n", *(*uintptr)(unsafe.Pointer(&f)))
 }
