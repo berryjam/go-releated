@@ -7,8 +7,23 @@ import (
 	"fmt"
 )
 
-func e() { fmt.Println("func e") }
-func f() { fmt.Println("what the fuck") }
+func e() float64 {
+	fmt.Println("func e")
+	return 0
+}
+
+func f() float64 {
+	fmt.Println("func f")
+	return 3.14
+}
+
+func g() string {
+	return "return by g()"
+}
+
+func h() string {
+	return "return by h()"
+}
 
 func JumpAssemblyDataWithReflect(p uintptr) []byte {
 	return []byte{
@@ -17,10 +32,6 @@ func JumpAssemblyDataWithReflect(p uintptr) []byte {
 		byte(p >> 8),
 		byte(p >> 16),
 		byte(p >> 24),
-		//byte(p >> 32),
-		//byte(p >> 40),
-		//byte(p >> 48),
-		//byte(p >> 56),
 		0xFF, 0xe2,
 	}
 }
@@ -39,18 +50,9 @@ func RawMemoryAccessWithReflect(p uintptr, l int) []byte {
 }
 
 func replaceWithReflect(from, to interface{}) {
-	//if reflect.ValueOf(from).Type() != reflect.ValueOf(to).Type() {
-	//
-	//}
-	//if reflect.ValueOf(from).Kind() != reflect.Func {
-	//
-	//}
 
-	fmt.Printf("reflect.ValueOf(to).Pointer():0x%x\n", reflect.ValueOf(to).Pointer())
 	jumpAndExecToAssemblyData := JumpAssemblyDataWithReflect(reflect.ValueOf(to).Pointer())
-	fmt.Printf("to:0x%x\n", reflect.ValueOf(to).Pointer())
 	funcLocation := reflect.ValueOf(from).Pointer()
-	fmt.Printf("from:0x%x\n", funcLocation)
 	window := RawMemoryAccessWithReflect(funcLocation, len(jumpAndExecToAssemblyData))
 
 	page := getPageWithReflect(funcLocation)
@@ -61,5 +63,7 @@ func replaceWithReflect(from, to interface{}) {
 
 func main() {
 	replaceWithReflect(e, f)
-	e()
+	fmt.Println(e())
+	replaceWithReflect(g, h)
+	fmt.Println(g())
 }
