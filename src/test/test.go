@@ -1,12 +1,12 @@
 package main
 
-
 import (
 	"os"
 	"io/ioutil"
 	"fmt"
 	"hash/crc32"
 	"reflect"
+	"runtime/debug"
 )
 
 type User struct {
@@ -33,8 +33,34 @@ func (u User) ReflectCallFuncNoArgs() {
 	fmt.Println("ReflectCallFuncNoArgs")
 }
 
+type Tmp struct {
+	Tags []interface{}
+}
+
 func main() {
-	ReflectUsage()
+	fmt.Printf("%v\n", 281475003522658%16)
+	//ReflectUsage()
+	//var tmp Tmp
+	//tmp.Tags =nil
+	//tmp.Tags = append(tmp.Tags,1)
+	//tmp.Tags = append(tmp.Tags,2)
+	//fmt.Println(len(tmp.Tags))
+	a()
+	fmt.Println("normally returned from main")
+}
+
+func r() {
+	if r := recover(); r != nil {
+		fmt.Println("Recovered", r)
+		debug.PrintStack()
+	}
+}
+
+func a() {
+	defer r()
+	n := []int{5, 7, 4}
+	fmt.Println(n[3])
+	fmt.Println("normally returned from a")
 }
 
 func ReflectUsage() {
