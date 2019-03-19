@@ -75,6 +75,7 @@ func ParseReply(reply []byte) string {
 
 	switch reply[0] {
 	case '+':
+		fallthrough
 	case '-':
 		if reply == nil || len(reply) < 3 {
 			throwPanic(fmt.Sprintf("回复长度错误，至少为3个字节，实际为:%v\n", len(reply)))
