@@ -20,6 +20,7 @@
 
 ### 命令行模式
 
+
 7.1 go build redis_protocol_parser.go
 
 7.2 解析请求:./redis_protocol_parser request $'*3\r\n$3\r\nSET\r\n$5\r\nmykey\r\n$7\r\nmyvalue\r\n'
