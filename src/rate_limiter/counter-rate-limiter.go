@@ -8,6 +8,12 @@ import (
 
 var redisdb *redis.Client
 
+var counterLuaScript = `
+	redis.pcall("zadd", KEYS[1], ARGV[1], ARGV[1]); 
+	redis.pcall("zremrangebyscore", KEYS[1], 0, ARGV[2]); 
+	local count = redis.pcall("zcard", KEYS[1]); 
+	redis.pcall("expire", KEYS[1], ARGV[3]); return count`
+
 var evalSha string
 
 func init() {
@@ -22,7 +28,7 @@ func initRedisClient() {
 	})
 
 	var err error
-	evalSha, err = redisdb.ScriptLoad(`redis.pcall("zadd", KEYS[1], ARGV[1], ARGV[1]); redis.pcall("zremrangebyscore", KEYS[1], 0, ARGV[2]); local count = redis.pcall("zcard", KEYS[1]); redis.pcall("expire", KEYS[1], ARGV[3]); return count`).Result()
+	evalSha, err = redisdb.ScriptLoad(counterLuaScript).Result()
 	if err != nil {
 		panic(err)
 	}
@@ -44,7 +50,7 @@ func isAllowed(uid string, action string, period, maxCount int) bool {
 }
 
 func CreateOrder() {
-	canCreateOrder := isAllowed("berryjam", "createOrder", 5, 50)
+	canCreateOrder := isAllowed("berryjam", "createOrder", 5, 10)
 	if canCreateOrder {
 		// 处理下单逻辑
 		// ...
