@@ -9,11 +9,12 @@ import (
 var redisdb *redis.Client
 
 var counterLuaScript = `
-	redis.pcall("zadd", KEYS[1], ARGV[1], ARGV[1]); 
-	redis.pcall("zremrangebyscore", KEYS[1], 0, ARGV[2]); 
-	local count = redis.pcall("zcard", KEYS[1]); 
-	redis.pcall("expire", KEYS[1], ARGV[3]); 
-	return count`
+	-- 记录行为
+	redis.pcall("zadd", KEYS[1], ARGV[1], ARGV[1]); -- value 和 score 都使用纳秒时间戳，即ARGV[1]
+	redis.pcall("zremrangebyscore", KEYS[1], 0, ARGV[2]); -- 移除时间窗口之前的行为记录，剩下的都是时间窗口内的
+	local count = redis.pcall("zcard", KEYS[1]); -- 获取窗口内的行为数量
+	redis.pcall("expire", KEYS[1], ARGV[3]); -- 设置 zset 过期时间，避免冷用户持续占用内存
+	return count -- 返回窗口内行为数量`
 
 var evalSha string
 
