@@ -68,10 +68,12 @@ func sleb128decode(bytes []byte) int64 {
 	var res uint64 = 0
 	var i uint8 = 0
 	isNegative := false
+	var shift uint64 = 0
 	for {
 		flag := bytes[i] & 0x80
 		low7bit := bytes[i] & 0x7F
-		res |= uint64(low7bit) << (7 * i)
+		res |= uint64(low7bit) << (shift)
+		shift+=7
 		if flag != 0 {
 			i++
 		} else {
@@ -86,21 +88,47 @@ func sleb128decode(bytes []byte) int64 {
 		return int64(res)
 	} else {
 		tmp := int64(res)
-		tmp |= -(1 << (7 * i))
+		tmp |= -(1 << shift)
 		return tmp
 	}
 }
 
-func main() {
+func TestUleb128() {
+	fmt.Println("TestUleb128")
 	encodedData := uleb128encode(12857)
 	fmt.Printf("%x\n", encodedData)
 	fmt.Printf("%+v\n", uleb128decode(encodedData))
+	fmt.Println()
+}
 
-	encodedData = uleb128encode(16256)
+func TestSleb128() {
+	fmt.Println("TestSleb128")
+	encodedData := uleb128encode(16256)
 	fmt.Printf("%x\n", encodedData)
 	fmt.Printf("%+v\n", uleb128decode(encodedData))
 
 	encodedData = sleb128encode(-128)
 	fmt.Printf("%x\n", encodedData)
 	fmt.Printf("%+v\n", sleb128decode(encodedData))
+	fmt.Println()
+}
+
+func TestSleb1281() {
+	fmt.Println("TestSleb1281")
+	encodedData := uleb128encode(12726)
+	fmt.Printf("%x\n", encodedData)
+	fmt.Printf("%+v\n", uleb128decode(encodedData))
+
+	encodedData = sleb128encode(-3658)
+	fmt.Printf("%x\n", encodedData)
+	fmt.Printf("%+v\n", sleb128decode(encodedData))
+	fmt.Println()
+}
+
+func main() {
+	TestUleb128()
+
+	TestSleb128()
+
+	TestSleb1281()
 }
