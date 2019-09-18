@@ -50,7 +50,8 @@ func sleb128encode(value int64) []byte {
 		b := (byte)(value & 0x7F)
 		signFlag := (byte)(value & 0x40)
 		value >>= 7
-		if (value == 0 && signFlag == 0) || (value == -1 && signFlag != 0) {
+		if (value == 0 && signFlag == 0) ||  // 正数
+			(value == -1 && signFlag != 0) { // 负数
 			more = 0
 		} else {
 			b |= 0x80
