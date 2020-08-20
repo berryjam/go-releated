@@ -69,6 +69,11 @@ func f3() (r int) {
 	return 1
 }
 
+func c() (i int) {
+	defer func() { i++ }()
+	return 1
+}
+
 func main() {
 	//a := 1
 	//b := 2
@@ -85,4 +90,5 @@ func main() {
 	fmt.Println(f1())
 	fmt.Println(f2())
 	fmt.Println(f3())
+	fmt.Println(c())
 }
