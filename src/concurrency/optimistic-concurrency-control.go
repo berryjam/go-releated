@@ -37,5 +37,7 @@ func incr(i int, wg *sync.WaitGroup) {
 		}
 	}
 	//counter++
-	fmt.Printf("goroutine%+v: spinNum:%+v\n", i, spinNum)
+	if spinNum != 0 {
+		fmt.Printf("goroutine%+v: spinNum:%+v\n", i, spinNum)
+	}
 }
