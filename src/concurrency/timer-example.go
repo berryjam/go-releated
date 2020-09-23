@@ -15,7 +15,7 @@ type MyStruct struct {
 
 func (m *MyStruct) Rpc() {
 	fmt.Printf("call rpc\n")
-	go func(){
+	go func() {
 		m.rpcRecCh <- true
 	}()
 }
@@ -27,7 +27,7 @@ func main() {
 	}
 
 	go func(m *MyStruct) {
-		timeoutCh := make(chan bool, 1)
+		timeoutCh := make(chan bool)
 		timer := time.AfterFunc(2*time.Second, func() {
 			timeoutCh <- true
 		})
@@ -54,6 +54,8 @@ func main() {
 			if r%7 == 0 {
 				m.Rpc()
 				//break
+			} else {
+				fmt.Printf("no call rpc\n")
 			}
 			//m.Rpc()
 			time.Sleep(1 * time.Second)
