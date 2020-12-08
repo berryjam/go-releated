@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/allegro/bigcache"
 	"os"
 	"runtime"
+	"strconv"
 	"time"
 )
 
@@ -92,6 +94,16 @@ func main() {
 		runtime.GC()
 		fmt.Printf("With a plain slice (%T), GC took %s\n", s, timeGC())
 		_ = s[0]
+	case "6":
+		cache, _ := bigcache.NewBigCache(bigcache.DefaultConfig(10 * time.Minute))
+		for i := 0; i < N; i++ {
+			num := strconv.Itoa(i)
+			cache.Set(num, []byte(num))
+		}
+
+		runtime.GC()
+		fmt.Printf("With bigcache , GC took %s\n", timeGC())
+		_ = cache
 	}
 }
 
