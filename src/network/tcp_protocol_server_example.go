@@ -21,18 +21,17 @@ func main() {
 		if err != nil {
 			fmt.Printf("conn err:[%v]\n", err)
 		} else {
-			//go handle(conn)
-			go handleWithFrameBuilder(conn)
+			go handleTCP(conn)
+			//go handleWithFrameBuilder(conn)
 		}
 	}
 }
 
-func handle(conn net.Conn) {
+func handleTCP(conn net.Conn) {
 	defer conn.Close()
 	buf := make([]byte, 1024)
 	for {
 		n, err := conn.Read(buf)
-		//n,err := io.ReadFull(conn,buf)
 		if err != nil {
 			if err == io.EOF {
 				continue

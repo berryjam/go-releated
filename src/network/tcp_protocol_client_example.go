@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func sendWithoutProtocol() {
+func sendTCPWithoutProtocol() {
 	data := []byte("这是一个数据包")
 	conn, err := net.DialTimeout("tcp", "localhost:8888", time.Second*30)
 	if err != nil {
@@ -24,7 +24,7 @@ func sendWithoutProtocol() {
 	}
 }
 
-func sendWithProtocol() {
+func sendTCPWithProtocol() {
 	conn, err := net.DialTimeout("tcp", "localhost:8888", time.Second*30)
 	if err != nil {
 		fmt.Printf("connect failed, err : %v\n", err.Error())
@@ -51,6 +51,6 @@ func sendWithProtocol() {
 }
 
 func main() {
-	//sendWithoutProtocol()
-	sendWithProtocol()
+	sendTCPWithoutProtocol()
+	//sendTCPWithProtocol()
 }
