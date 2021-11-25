@@ -4,7 +4,6 @@ go 1.12
 
 require (
 	bou.ke/monkey v1.0.2 // indirect
-	git.code.oa.com/video_ad_aid/aid_dataservice v0.0.0-20201101154121-5c843ecfb0c0 // indirect
 	github.com/allegro/bigcache v1.2.1
 	github.com/berryjam/monkey v1.0.1
 	github.com/bitly/go-simplejson v0.5.0
